@@ -6,7 +6,7 @@ import sys
 from models.Route import Route
 from extractors.Mappings import txcmodetogtfstype
 
-class RouteExtractor:
+class RoutesExtractor:
   PRINT_PROGRESS_INTERVAL = 0.1
   TXC_NAMESPACES = {'txc': 'http://www.transxchange.org.uk/'}
 
