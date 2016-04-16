@@ -1,4 +1,5 @@
 from extractors.AgencyExtractor import AgencyExtractor
+from extractors.StopsDownloader import StopsDownloader
 
-print 'EXTRACTING AGENCIES:'
+StopsDownloader().download()
 AgencyExtractor().extract()
