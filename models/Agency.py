@@ -6,7 +6,7 @@ class Agency:
     self.timezone = timezone
 
   def __eq__(self, other):
-    return self.id == other.getid() and self.name == other.getname() and self.url == other.geturl() and self.timezone == other.gettimezone()
+    return self.id == other.getid()
 
   def __hash__(self):
     return hash(self.id)

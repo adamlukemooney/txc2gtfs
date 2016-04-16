@@ -12,23 +12,22 @@ class AgencyExtractor:
   inputfiles = os.listdir('input')
   totalfiles = len(inputfiles)
   progress = 0.0
+  agencies = set()
 
   def extract(self):
     print "Extracting agencies from input directory"
-    agencies = self.__extractagencies()
-    self.__writegtfsagencies(agencies)
+    self.__extractagencies()
+    self.__writegtfsagencies()
     print "- Done"
 
   def __extractagencies(self):
-    sys.stdout.write('- Reading operators to agencies in memory')
+    sys.stdout.write('- Reading TXC Operators to GTFS Agencies in memory')
     sys.stdout.flush()
-    agencies = set()
     for index, file in enumerate(self.inputfiles):
       self.__printprogress(index)
       if file.endswith('.xml'):
-        self.__process(file, agencies)
+        self.__process(file)
     print "."
-    return agencies
 
   def __printprogress(self, currentindex):
     if(currentindex / float(self.totalfiles) > self.progress + self.PRINT_PROGRESS_INTERVAL):
@@ -36,9 +35,9 @@ class AgencyExtractor:
       sys.stdout.flush()
       self.progress += 0.1
 
-  def __process(self, file, agencies):
+  def __process(self, file):
     for operator in self.__getoperators(file):
-      agencies.add(self.__convertoperatortoagency(operator))
+      self.agencies.add(self.__convertoperatortoagency(operator))
 
   def __convertoperatortoagency(self, operator):
     agencyid = operator.attrib['id']
@@ -51,10 +50,10 @@ class AgencyExtractor:
     root = xml.etree.ElementTree.parse('input/' + file).getroot()
     return root.findall('txc:Operators/txc:Operator', self.TXC_NAMESPACES)
 
-  def __writegtfsagencies(self, agencies):
+  def __writegtfsagencies(self):
     print "- Writing agencies.txt"
     with open('output/agency.txt', 'wb') as csvfile:
       csvwriter = csv.writer(csvfile)
       csvwriter.writerow(['agency_id', 'agency_name', 'agency_url', 'agency_timezone'])
-      for agency in agencies:
+      for agency in self.agencies:
         csvwriter.writerow(agency.getgtfsvalues())
