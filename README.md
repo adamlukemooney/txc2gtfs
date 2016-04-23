@@ -15,5 +15,5 @@ You need Python 2.7 to run this program.
 
 ## Current implementation
 
-The current implementation can extract TXC `Operator` elements and output
-them in the (roughly equivalent) `agency.txt` GTFS file.
+The current implementation can extract all mandatory elements of a GTFS dataset
+except for the calendar, which is coming soon.
